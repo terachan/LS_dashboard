@@ -26,7 +26,7 @@ pref_list = r4_5["都道府県名"]
 
 disease_list = pd.read_csv('./csv_data/厚労省疾患名リスト.csv')
 st.sidebar.header('【厚労省定義の疾患分類】')
-st.sidebar.text(disease_list)
+st.sidebar.write(disease_list, unsafe_allow_html=True)
 
 st.header('①都道府県別一人当たり医療費(円/年)(2022年)')
 
@@ -143,7 +143,6 @@ option_pref3 = st.selectbox(
 
 max_x3 = 0
 max_x3 = int(df_num_pat[option_pref3].max())
-st.write(max_x3)
 
 fig = px.bar(df_num_pat,
             x=option_pref3,
