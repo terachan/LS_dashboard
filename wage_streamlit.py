@@ -5,7 +5,7 @@ import pydeck as pdk
 import plotly.express as px
 
 st.title('日本の医療オープンデータ解析DB')
-st.text('本結果は厚生労働省(医療費の地域差分析)やRESASの医療系オープンデータを加工して作成しております。')
+st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
 
 option_select = st.sidebar.selectbox(
     "【①②共通】対象とする保険制度を選択して下さい",
@@ -28,7 +28,7 @@ disease_list = pd.read_csv('./csv_data/厚労省疾患名リスト.csv')
 st.sidebar.header('【厚労省定義の疾患分類】')
 st.sidebar.write(disease_list, unsafe_allow_html=True)
 
-st.header('①都道府県別一人当たり医療費(円/年)(2022年)')
+st.subheader('①都道府県別一人当たり医療費(円/年)(2022年)')
 
 #disease_list.insert(0,['疾患合計'])
 #r4_5.set_axis(disease_list, axis=1)
@@ -79,7 +79,7 @@ st.text('出典：厚生労働省(医療費の地域差分析)(2023年12月28日
 
 
 
-st.header('②疾患別一人当たり医療費(円/年)(2022年)')
+st.subheader('②疾患別一人当たり医療費(円/年)(2022年)')
 
 r4_5_t = []
 
@@ -124,7 +124,7 @@ st.text('出典：厚生労働省(医療費の地域差分析)(2023年12月28日
 
 
 
-st.header('③疾患別患者数(入院/外来(単位:千人))(2020年)')
+st.subheader('③疾患別患者数(入院/外来(単位:千人))(2020年)')
 
 option_inorout = st.selectbox(
     '入院 or 外来?',
@@ -156,7 +156,7 @@ st.plotly_chart(fig)
 
 st.text('出典：RESAS(医療・福祉マップ(医療受給))')
 
-st.header('④疾患別医師数(2020年)')
+st.subheader('④疾患別医師数/医療施設数(2020年)')
 st.text('出典：RESAS(医療・福祉マップ(医療受給))')
 
 
