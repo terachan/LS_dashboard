@@ -36,7 +36,7 @@ st.subheader('①都道府県別一人当たり医療費(円/年)(2022年)')
 disease_list2 = r4_5.columns.values[1:]
 
 option_disease = st.selectbox(
-    '疾患名',
+    '疾患分類を選択して下さい。',
     (disease_list2))
 
 max_x = 0
@@ -72,10 +72,10 @@ fig = px.bar(r4_5,
             range_x=[0,max_x],
             orientation='h',
             width=800,
-            height=600)
+            height=800)
 st.plotly_chart(fig)
 
-st.text('出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)')
+st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
 
 
 
@@ -94,7 +94,7 @@ else:
 #r4_5_t = r4_5_t.astype(int)
 
 option_pref = st.selectbox(
-    '都道府県名',
+    '都道府県名を選択して下さい。',
     (pref_list))
 
 #r4_5_t[option_pref] = r4_5_t[option_pref].astype(int)
@@ -120,14 +120,15 @@ fig = px.bar(r4_5_t,
             height=600)
 st.plotly_chart(fig)
 
-st.text('出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)')
+st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
+
 
 
 
 st.subheader('③疾患別患者数(入院/外来(単位:千人))(2020年)')
 
 option_inorout = st.selectbox(
-    '入院 or 外来?',
+    '入院 or 外来?を選択して下さい。',
     ['入院', '外来'])
 
 if option_inorout == '入院':
@@ -138,7 +139,7 @@ else:
 pref_list3 = df_num_pat.columns.values[1:]
 
 option_pref3 = st.selectbox(
-    '都道府県',
+    '都道府県名を選択して下さい。',
     (pref_list3))
 
 max_x3 = 0
@@ -154,9 +155,10 @@ fig = px.bar(df_num_pat,
             height=600)
 st.plotly_chart(fig)
 
-st.text('出典：RESAS(医療・福祉マップ(医療受給))')
+st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
 
 st.subheader('④疾患別医師数/医療施設数(2020年)')
-st.text('出典：RESAS(医療・福祉マップ(医療受給))')
+st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
+
 
 
