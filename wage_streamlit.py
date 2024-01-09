@@ -5,7 +5,10 @@ import pydeck as pdk
 import plotly.express as px
 
 st.title('日本の医療オープンデータ解析DB')
+st.write('  \n')
+
 st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
+st.write('  \n')
 
 option_select = st.sidebar.selectbox(
     "【①②共通】対象とする保険制度を選択して下さい",
@@ -26,11 +29,15 @@ pref_list = r4_5["都道府県名"]
 
 disease_list = pd.read_csv('./csv_data/厚労省疾患名リスト.csv')
 st.sidebar.header('【厚労省定義の疾患分類】')
-st.sidebar.write(disease_list, unsafe_allow_html=True)
+st.sidebar.write(disease_list['疾患分類'], unsafe_allow_html=True)
+
+hcp_dev_list = pd.read_csv('./csv_data/hcp_dev_list.csv')
+st.sidebar.header('【RESAS定義の診療科】')
+st.sidebar.write(hcp_dev_list, unsafe_allow_html=True)
 
 st.subheader('①都道府県別一人当たり医療費(円/年)(2022年)')
 
-#disease_list.insert(0,['疾患合計'])
+#disease_list.insert(0,0,'疾患合計')
 #r4_5.set_axis(disease_list, axis=1)
 
 disease_list2 = r4_5.columns.values[1:]
@@ -40,30 +47,7 @@ option_disease = st.selectbox(
     (disease_list2))
 
 max_x = 0
-#max_x = int(r4_5[option_disease].max().replace(",",""))
-
-
-if option_select == '全制度計':
-
-    if option_disease == '疾患合計':
-        max_x = 500000
-    else:
-        max_x = 80000
-
-elif option_select == '市町村国民健康保険':
-
-        if option_disease == '疾患合計':
-            max_x = 500000
-        else:
-            max_x = 80000
-
-else:
-         if option_disease == '疾患合計':
-            max_x = 1200000
-         else:
-            max_x = 300000
-
-   
+max_x = int(r4_5[option_disease].max())
 
 fig = px.bar(r4_5,
             x=option_disease,
@@ -76,7 +60,10 @@ fig = px.bar(r4_5,
 st.plotly_chart(fig)
 
 st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
-
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
 
 
 st.subheader('②疾患別一人当たり医療費(円/年)(2022年)')
@@ -90,25 +77,12 @@ elif option_select == '市町村国民健康保険':
 else:
     r4_5_t = pd.read_csv('./csv_data/r4-5kouki-t.csv')
 
-#r4_5_t = r4_5_t.replace(",","")
-#r4_5_t = r4_5_t.astype(int)
-
 option_pref = st.selectbox(
     '都道府県名を選択して下さい。',
     (pref_list))
 
-#r4_5_t[option_pref] = r4_5_t[option_pref].astype(int)
-
 max_x2 = 0
-#max_x2 = int(r4_5_t[option_pref].max())
-
-if option_select == '全制度計':
-    max_x2 = 80000
-elif option_select == '市町村国民健康保険':
-    max_x2 = 80000
-else:
-    max_x2 = 300000
-
+max_x2 = int(r4_5_t[option_pref].max())
 
 fig = px.bar(r4_5_t,
             x=option_pref,
@@ -121,14 +95,16 @@ fig = px.bar(r4_5_t,
 st.plotly_chart(fig)
 
 st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
-
-
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
 
 
 st.subheader('③疾患別患者数(入院/外来(単位:千人))(2020年)')
 
 option_inorout = st.selectbox(
-    '入院 or 外来?を選択して下さい。',
+    '入院 or 外来を選択して下さい。',
     ['入院', '外来'])
 
 if option_inorout == '入院':
@@ -156,9 +132,49 @@ fig = px.bar(df_num_pat,
 st.plotly_chart(fig)
 
 st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
+st.write('  \n')
 
 st.subheader('④疾患別医師数/医療施設数(2020年)')
+
+option_hcp = st.selectbox(
+    '医師数もしくは病院数、一般診療所数を選択して下さい。',
+    ['医師数', '病院数','一般診療所数'])
+
+if option_hcp == '医師数':
+    df_num_hcp = pd.read_csv('./csv_data/num_doctors.csv')
+
+elif option_hcp == '病院数': 
+    df_num_hcp = pd.read_csv('./csv_data/num_hospitals.csv')
+
+else:
+    df_num_hcp = pd.read_csv('./csv_data/num_clinics.csv')
+
+pref_list4 = df_num_hcp.columns.values[1:]
+
+option_pref4 = st.selectbox(
+    '都道府県を選択して下さい。',
+    (pref_list4))
+
+max_x4 = 0
+max_x4 = int(df_num_hcp[option_pref4].max())
+
+fig = px.bar(df_num_hcp,
+            x=option_pref4,
+            y="診療科",
+            color="診療科",
+            range_x=[0,max_x4],
+            orientation='h',
+            width=800,
+            height=600)
+st.plotly_chart(fig)
+
 st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
+st.write('  \n')
+st.write('  \n')
+st.write('<a href="mailto:tadahisa.terao777@gmail.com">お問合せ先はこちらまで(tadahisa.terao777@gmail.com)</a>', unsafe_allow_html=True)
 
 
 
