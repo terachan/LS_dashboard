@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st 
 import pydeck as pdk
 import plotly.express as px
+from PIL import Image
 
 st.title('日本の医療オープンデータ解析DB')
 st.write('  \n')
@@ -10,6 +11,11 @@ st.write('  \n')
 st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
 st.write('  \n')
 
+image = Image.open('futureHospital.png')
+st.image(image)
+st.write('  \n')
+st.write('  \n')               
+                   
 option_select = st.sidebar.selectbox(
     "【①②共通】対象とする保険制度を選択して下さい",
     ('市町村国民健康保険','後期高齢者医療制度','全制度計')
