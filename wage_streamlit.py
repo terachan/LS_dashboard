@@ -59,6 +59,20 @@ fig = px.bar(r4_5,
             height=800)
 st.plotly_chart(fig)
 
+st.download_button(
+    label="①CSVファイルのダウンロード(グラフ分)",
+    data=r4_5[['都道府県名',option_disease]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    key='download-button1'
+)
+
+st.download_button(
+    label="①CSVファイルのダウンロード(全データ)",
+    data=r4_5.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='allrawdata1.csv',  # ダウンロードするファイル名を指定
+    key='download-button1all'
+)
+
 st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
 st.write('  \n')
 st.write('  \n')
@@ -93,6 +107,20 @@ fig = px.bar(r4_5_t,
             width=800,
             height=600)
 st.plotly_chart(fig)
+
+st.download_button(
+    label="②CSVファイルのダウンロード(グラフ分)",
+    data=r4_5_t[['疾患名',option_pref]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    key='download-button2'
+)
+
+st.download_button(
+    label="②CSVファイルのダウンロード(全データ)",
+    data=r4_5_t.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='allrawdata2.csv',  # ダウンロードするファイル名を指定
+    key='download-button2all'
+)
 
 st.write('<a href="https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/kenkou_iryou/iryouhoken/database/iryomap/index.html">出典：厚生労働省(医療費の地域差分析)(2023年12月28日公表)</a>', unsafe_allow_html=True)
 st.write('  \n')
@@ -130,6 +158,20 @@ fig = px.bar(df_num_pat,
             width=800,
             height=600)
 st.plotly_chart(fig)
+
+st.download_button(
+    label="③CSVファイルのダウンロード(グラフ分)",
+    data=df_num_pat[['疾患分類',option_pref3]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    key='download-button3'
+)
+
+st.download_button(
+    label="③CSVファイルのダウンロード(全データ)",
+    data=df_num_pat.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='allrawdata3.csv',  # ダウンロードするファイル名を指定
+    key='download-button3all'
+)
 
 st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
 st.write('  \n')
@@ -171,10 +213,21 @@ fig = px.bar(df_num_hcp,
             height=600)
 st.plotly_chart(fig)
 
+st.download_button(
+    label="④CSVファイルのダウンロード(グラフ分)",
+    data=df_num_hcp[['診療科',option_pref4]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    key='download-button4'
+)
+
+st.download_button(
+    label="④CSVファイルのダウンロード(全データ)",
+    data=df_num_hcp.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
+    file_name='allrawdata4.csv',  # ダウンロードするファイル名を指定
+    key='download-button4all'
+)
+
 st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
 st.write('  \n')
 st.write('  \n')
 st.write('<a href="mailto:tadahisa.terao777@gmail.com">お問合せ先はこちらまで(tadahisa.terao777@gmail.com)</a>', unsafe_allow_html=True)
-
-
-
