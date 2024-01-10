@@ -8,7 +8,7 @@ from PIL import Image
 st.title('日本の医療オープンデータ解析DB')
 st.write('  \n')
 
-st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
+st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析、2023年12月28日公表)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
 st.write('  \n')
 
 image = Image.open('futureHospital.png')
@@ -18,7 +18,7 @@ st.write('  \n')
                    
 option_select = st.sidebar.selectbox(
     "【①②共通】対象とする保険制度を選択して下さい",
-    ('市町村国民健康保険','後期高齢者医療制度','全制度計')
+    ('全制度計','市町村国民健康保険','後期高齢者医療制度')
 )
 st.sidebar.write(option_select,'を選択中')
 
@@ -26,10 +26,16 @@ r4_5 = []
 
 if option_select == '全制度計':
     r4_5 = pd.read_csv('./csv_data/r4-5all.csv')
+    filename = '①都道府県別一人当たり医療費(円/年)(2022年)(全制度計).csv'
+    filenameall = '①都道府県別一人当たり医療費(円/年)(2022年)(全制度計, 全データ).csv'
 elif option_select == '市町村国民健康保険':
     r4_5 = pd.read_csv('./csv_data/r4-5kokuho.csv')
+    filename = '①都道府県別一人当たり医療費(円/年)(2022年)(国保).csv'
+    filenameall = '①都道府県別一人当たり医療費(円/年)(2022年)(国保, 全データ).csv'
 else:
     r4_5 = pd.read_csv('./csv_data/r4-5kouki.csv')
+    filename = '①都道府県別一人当たり医療費(円/年)(2022年)(後期).csv'
+    filenameall = '①都道府県別一人当たり医療費(円/年)(2022年)(後期, 全データ).csv'
 
 pref_list = r4_5["都道府県名"]
 
@@ -68,14 +74,14 @@ st.plotly_chart(fig)
 st.download_button(
     label="①CSVファイルのダウンロード(グラフ分)",
     data=r4_5[['都道府県名',option_disease]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    file_name=filename,  # ダウンロードするファイル名を指定
     key='download-button1'
 )
 
 st.download_button(
     label="①CSVファイルのダウンロード(全データ)",
     data=r4_5.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='allrawdata1.csv',  # ダウンロードするファイル名を指定
+    file_name=filenameall,  # ダウンロードするファイル名を指定
     key='download-button1all'
 )
 
@@ -92,10 +98,16 @@ r4_5_t = []
 
 if option_select == '全制度計':
     r4_5_t = pd.read_csv('./csv_data/r4-5all-t.csv')
+    filename = '②疾患別一人当たり医療費(円/年)(2022年)(全制度計).csv'
+    filenameall = '②疾患別一人当たり医療費(円/年)(2022年)(全制度計, 全データ).csv'
 elif option_select == '市町村国民健康保険':
     r4_5_t = pd.read_csv('./csv_data/r4-5kokuho-t.csv')
+    filename = '②疾患別一人当たり医療費(円/年)(2022年)(国保).csv'
+    filenameall = '②疾患別一人当たり医療費(円/年)(2022年)(国保, 全データ).csv'
 else:
     r4_5_t = pd.read_csv('./csv_data/r4-5kouki-t.csv')
+    filename = '②疾患別一人当たり医療費(円/年)(2022年)(後期).csv'
+    filenameall = '②疾患別一人当たり医療費(円/年)(2022年)(後期, 全データ).csv'
 
 option_pref = st.selectbox(
     '都道府県名を選択して下さい。',
@@ -117,14 +129,14 @@ st.plotly_chart(fig)
 st.download_button(
     label="②CSVファイルのダウンロード(グラフ分)",
     data=r4_5_t[['疾患名',option_pref]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    file_name=filename,  # ダウンロードするファイル名を指定
     key='download-button2'
 )
 
 st.download_button(
     label="②CSVファイルのダウンロード(全データ)",
     data=r4_5_t.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='allrawdata2.csv',  # ダウンロードするファイル名を指定
+    file_name=filenameall,  # ダウンロードするファイル名を指定
     key='download-button2all'
 )
 
@@ -143,8 +155,13 @@ option_inorout = st.selectbox(
 
 if option_inorout == '入院':
     df_num_pat = pd.read_csv('./csv_data/num_inpatients.csv')
+    filename = '③疾患別患者数(入院, 2020年, 単位:千人).csv'
+    filenameall = '③疾患別患者数(入院(全データ), 2020年, 単位:千人).csv'
+    
 else:
     df_num_pat = pd.read_csv('./csv_data/num_outpatients.csv')
+    filename = '③疾患別患者数(外来, 2020年, 単位:千人).csv'
+    filenameall = '③疾患別患者数(外来(全データ), 2020年, 単位:千人).csv'
 
 pref_list3 = df_num_pat.columns.values[1:]
 
@@ -168,14 +185,14 @@ st.plotly_chart(fig)
 st.download_button(
     label="③CSVファイルのダウンロード(グラフ分)",
     data=df_num_pat[['疾患分類',option_pref3]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    file_name=filename,  # ダウンロードするファイル名を指定
     key='download-button3'
 )
 
 st.download_button(
     label="③CSVファイルのダウンロード(全データ)",
     data=df_num_pat.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='allrawdata3.csv',  # ダウンロードするファイル名を指定
+    file_name=filenameall,  # ダウンロードするファイル名を指定
     key='download-button3all'
 )
 
@@ -193,12 +210,18 @@ option_hcp = st.selectbox(
 
 if option_hcp == '医師数':
     df_num_hcp = pd.read_csv('./csv_data/num_doctors.csv')
+    filename = '④疾患別医師数(2020年).csv'
+    filenameall = '④疾患別医師数(2020年)(全データ).csv'
 
 elif option_hcp == '病院数': 
     df_num_hcp = pd.read_csv('./csv_data/num_hospitals.csv')
+    filename = '④疾患別病院数(2020年).csv'
+    filenameall = '④疾患別病院数(2020年)(全データ).csv'
 
 else:
     df_num_hcp = pd.read_csv('./csv_data/num_clinics.csv')
+    filename = '④疾患別一般診療所数(2020年).csv'
+    filenameall = '④疾患別一般診療所数(2020年)(全データ).csv'
 
 pref_list4 = df_num_hcp.columns.values[1:]
 
@@ -222,14 +245,14 @@ st.plotly_chart(fig)
 st.download_button(
     label="④CSVファイルのダウンロード(グラフ分)",
     data=df_num_hcp[['診療科',option_pref4]].to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='rawdata.csv',  # ダウンロードするファイル名を指定
+    file_name=filename,  # ダウンロードするファイル名を指定
     key='download-button4'
 )
 
 st.download_button(
     label="④CSVファイルのダウンロード(全データ)",
     data=df_num_hcp.to_csv().encode('utf-8'),  # データフレームをCSV形式に変換してエンコード
-    file_name='allrawdata4.csv',  # ダウンロードするファイル名を指定
+    file_name=filenameall,  # ダウンロードするファイル名を指定
     key='download-button4all'
 )
 
