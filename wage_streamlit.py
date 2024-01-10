@@ -41,7 +41,8 @@ pref_list = r4_5["都道府県名"]
 
 disease_list = pd.read_csv('./csv_data/厚労省疾患名リスト.csv')
 st.sidebar.header('【厚労省定義の疾患分類】')
-st.sidebar.write(disease_list['疾患分類'], unsafe_allow_html=True)
+st.sidebar.write(disease_list, unsafe_allow_html=True)
+
 
 hcp_dev_list = pd.read_csv('./csv_data/hcp_dev_list.csv')
 st.sidebar.header('【RESAS定義の診療科】')
@@ -69,6 +70,9 @@ fig = px.bar(r4_5,
             orientation='h',
             width=800,
             height=800)
+
+fig.update_layout(yaxis=dict(title='都道府県名',dtick=1))
+
 st.plotly_chart(fig)
 
 st.download_button(
