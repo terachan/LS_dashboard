@@ -209,13 +209,18 @@ st.write('  \n')
 st.subheader('④疾患別医師数/医療施設数(2020年)')
 
 option_hcp = st.selectbox(
-    '医師数もしくは病院数、一般診療所数を選択して下さい。',
-    ['医師数', '病院数','一般診療所数'])
+    '医師数/10万人当たり医師数、もしくは病院数/一般診療所数を選択して下さい。',
+    ['医師数', '10万人当たり医師数','病院数','一般診療所数'])
 
 if option_hcp == '医師数':
     df_num_hcp = pd.read_csv('./csv_data/num_doctors.csv')
     filename = '④疾患別医師数(2020年).csv'
     filenameall = '④疾患別医師数(2020年)(全データ).csv'
+
+elif option_hcp == '10万人当たり医師数': 
+    df_num_hcp = pd.read_csv('./csv_data/num_doctors_per100k.csv')
+    filename = '④疾患別医師数(10万人当たり)(2020年).csv'
+    filenameall = '④疾患別医師数(10万人当たり)(全データ).csv'
 
 elif option_hcp == '病院数': 
     df_num_hcp = pd.read_csv('./csv_data/num_hospitals.csv')
@@ -243,8 +248,10 @@ fig = px.bar(df_num_hcp,
             range_x=[0,max_x4],
             orientation='h',
             width=800,
-            height=600)
+            height=800)
 st.plotly_chart(fig)
+
+fig.update_layout(yaxis=dict(title='',dtick=1))
 
 st.download_button(
     label="④CSVファイルのダウンロード(グラフ分)",
