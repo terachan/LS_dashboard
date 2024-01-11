@@ -4,6 +4,7 @@ import streamlit as st
 import pydeck as pdk
 import plotly.express as px
 from PIL import Image
+import random
 
 st.title('日本の医療オープンデータ解析DB')
 st.write('  \n')
@@ -11,8 +12,15 @@ st.write('  \n')
 st.write('<font size="4">本DB(ダッシュボード)は厚生労働省(医療費の地域差分析、2023年12月28日公表)やRESASの医療系オープンデータを加工して作成しております。</font>', unsafe_allow_html=True)
 st.write('  \n')
 
-image = Image.open('futureHospital.png')
-st.image(image)
+image0 = Image.open('./pics/pic0.PNG')
+image1 = Image.open('./pics/pic1.PNG')
+image2 = Image.open('./pics/pic2.PNG')
+image3 = Image.open('./pics/pic3.PNG')
+image4 = Image.open('./pics/pic4.PNG')
+
+image = [image0,image1,image2,image3,image4]
+
+st.image(image[random.randint(0,4)])
 st.write('  \n')
 st.write('  \n')               
                    
