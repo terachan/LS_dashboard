@@ -16,11 +16,11 @@ image0 = Image.open('./pics/pic0.PNG')
 image1 = Image.open('./pics/pic1.PNG')
 image2 = Image.open('./pics/pic2.PNG')
 image3 = Image.open('./pics/pic3.PNG')
-#image4 = Image.open('./pics/pic4.PNG')
+image4 = Image.open('./pics/picc4.PNG')
 
-image = [image0,image1,image2,image3]
+image = [image0,image1,image2,image3,image4]
 
-st.image(image[random.randint(0,3)])
+st.image(image[random.randint(0,4)])
 st.write('  \n')
 st.write('  \n')               
                    
