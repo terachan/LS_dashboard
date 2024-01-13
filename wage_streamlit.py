@@ -289,7 +289,7 @@ with tab2:
     st.write('各都道府県ごとのデータ(サマリータブ①で選択した疾患分類における一人当たり医療費(Y軸) X 各種生活習慣(飲酒量/喫煙率等)(X軸))をマッピングします。右肩上がりにマッピングされているほど、その生活習慣がその疾患の医療費に影響している(=相関が高い)ことを示しています。')
 
     sakeImg = Image.open('./pics/sake0.PNG')
-    smokeImg = Image.open('./pics/smoke0.PNG')
+    smokeImg = Image.open('./pics/sake0.PNG')
 
     habits = pd.read_csv('./csv_data/habits.csv')
     correl = pd.merge(r4_5, habits, on='都道府県名')
