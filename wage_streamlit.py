@@ -291,11 +291,11 @@ with tab2:
     st.header('生活習慣との相関')
     st.write('各都道府県ごとのデータ(サマリータブ①で選択した疾患分類における一人当たり医療費(Y軸) X 各種生活習慣(飲酒量/喫煙率等)(X軸))をマッピングします。右肩上がりにマッピングされているほど、その生活習慣がその疾患の医療費に影響している(=相関が高い)ことを示しています。')
 
-    #sakeImg0 = Image.open('./pics/sakee0.PNG')
+    sakeImg0 = Image.open('./pics/sakee0.png')
     sakeImg1 = Image.open('./pics/sake1.PNG')
     sakeImg2 = Image.open('./pics/sake2.PNG')
 
-    image2 = [sakeImg1,sakeImg2]
+    image2 = [sakeImg0,sakeImg1,sakeImg2]
 
     habits = pd.read_csv('./csv_data/habits.csv')
     correl = pd.merge(r4_5, habits, on='都道府県名')
@@ -305,7 +305,7 @@ with tab2:
         ['成人１人当たりの酒類消費量(ℓ/年,2021)','成人喫煙率(%,2019)']
         )
 
-    st.image(image2[random.randint(0,1)])
+    st.image(image2[random.randint(0,2)])
     st.write('  \n')
     st.write('  \n') 
     
