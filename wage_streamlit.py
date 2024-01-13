@@ -294,8 +294,12 @@ with tab2:
     sakeImg0 = Image.open('./pics/sakee0.png')
     sakeImg1 = Image.open('./pics/sake1.PNG')
     sakeImg2 = Image.open('./pics/sake2.PNG')
+    seaImg0 = Image.open('./pics/sea0.PNG')
+    seaImg1 = Image.open('./pics/sea1.PNG')
+    campImg0 = Image.open('./pics/camp0.PNG')
+    campImg1 = Image.open('./pics/camp1.PNG')
 
-    image2 = [sakeImg0,sakeImg1,sakeImg2]
+    image2 = [sakeImg0,sakeImg1,sakeImg2,seaImg0,seaImg1,campImg0,campImg1]
 
     habits = pd.read_csv('./csv_data/habits.csv')
     correl = pd.merge(r4_5, habits, on='都道府県名')
@@ -305,7 +309,7 @@ with tab2:
         ['成人１人当たりの酒類消費量(ℓ/年,2021)','成人喫煙率(%,2019)']
         )
 
-    st.image(image2[random.randint(0,2)])
+    st.image(image2[random.randint(0,6)])
     st.write('  \n')
     st.write('  \n') 
     
