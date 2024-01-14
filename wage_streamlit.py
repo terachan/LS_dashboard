@@ -8,7 +8,7 @@ import random
 
 
 st.title('日本の医療オープンデータ解析DB')
-tab_titles = ['サマリー','生活習慣との相関','TBC2']
+tab_titles = ['サマリー','生活習慣との相関','お問合せ先']
 tab1, tab2, tab3 = st.tabs(tab_titles)
 
 with tab1:
@@ -285,7 +285,6 @@ with tab1:
     st.write('<a href="https://resas.go.jp/medical-welfare-medical-analysis/">出典：RESAS(医療・福祉マップ(医療受給))</a>', unsafe_allow_html=True)
     st.write('  \n')
     st.write('  \n')
-    st.write('<a href="mailto:tadahisa.terao777@gmail.com">お問合せ先はこちらまで(tadahisa.terao777@gmail.com)</a>', unsafe_allow_html=True)
 
 with tab2:
     st.header('生活習慣との相関')
@@ -316,6 +315,7 @@ with tab2:
     s1 = correl[option_habits]
     s2 = correl[option_disease]
     res=s1.corr(s2)
+
     st.write('相関係数(-1~1)は',round(res,2),'です。1に近いほど正の相関、-1に近いほど負の相関を意味しています。0に近い場合はほぼ相関がないことを示しています。')
     
     mix_x = 0
@@ -345,5 +345,9 @@ with tab2:
     st.write('  \n')
 
 with tab３:
-    st.header('To Be Continued...２')
-    st.write('乞うご期待！')
+    st.write('本ダッシュボード(DB)は厚生労働省やRESAS等の医療系オープンデータを加工して作成しております。日本の医療業界に関わるビジネスパーソンの方々や地方自治体の方々の業務に少しでもお役にたてることを願っております。改善点やご要望等のフィードバックを頂けますと大変励みになります。ご連絡/お問合せは以下メールまでお願い致します。')
+    st.write('<a href="mailto:tadahisa.terao777@gmail.com">tadahisa.terao777@gmail.com</a>', unsafe_allow_html=True)
+    profileImg = Image.open('./pics/profile.JPG')
+    st.image(profileImg)
+    st.write('(開発者略歴) 現在関西を拠点に大手外資コンサルティング会社にてライフサイエンス/メドテック業界のデジタル化ご支援コンサルティングに従事。IT/インターネット/医療業界にて15年以上の新規事業開発経験、8年の海外駐在経験を有する。INSEAD MBA/東京大学大学院工学系研究科卒。趣味はマラソン(サブ3.5)とアプリ開発(Python/Swift)、2児(長男/次男)の父。')
+    
