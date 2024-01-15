@@ -304,7 +304,7 @@ with tab2:
     runImg0 = Image.open('./pics/run0.PNG')
     runImg1 = Image.open('./pics/run1.PNG')
     runImg2 = Image.open('./pics/run2.PNG')
-    smokeImg0 = Image.open('./pics/smoke0.PNG')
+    smokeImg0 = Image.open('./pics/smokee0.PNG')
     smokeImg1 = Image.open('./pics/smoke1.PNG')
     smokeImg2 = Image.open('./pics/smoke2.PNG')
 
