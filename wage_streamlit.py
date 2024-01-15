@@ -295,25 +295,50 @@ with tab2:
     sakeImg2 = Image.open('./pics/sake2.PNG')
     seaImg0 = Image.open('./pics/sea0.PNG')
     seaImg1 = Image.open('./pics/sea1.PNG')
+    seaImg2 = Image.open('./pics/sea2.PNG')
     campImg0 = Image.open('./pics/camp0.PNG')
     campImg1 = Image.open('./pics/camp1.PNG')
+    ramenImg0 = Image.open('./pics/ramen0.png')
+    ramenImg1 = Image.open('./pics/ramen1.PNG')
+    ramenImg2 = Image.open('./pics/ramen2.PNG')
+    runImg0 = Image.open('./pics/run0.png')
+    runImg1 = Image.open('./pics/run1.PNG')
+    runImg2 = Image.open('./pics/run2.PNG')
+    smokeImg0 = Image.open('./pics/smoke0.png')
+    smokeImg1 = Image.open('./pics/smoke1.PNG')
+    smokeImg2 = Image.open('./pics/smoke2.PNG')
 
-    image2 = [sakeImg0,sakeImg1,sakeImg2,seaImg0,seaImg1,campImg0,campImg1]
+    image2 = [sakeImg0,sakeImg1,sakeImg2,seaImg0,seaImg1,seaImg2,campImg0,campImg1]
+    ramenImg = [ramenImg0,ramenImg1,ramenImg2]
+    runImg = [runImg0,runImg1,runImg2]
+    smokeImg = [smokeImg0,smokeImg1,smokeImg2]
 
     habits = pd.read_csv('./csv_data/habits.csv')
     correl = pd.merge(r4_5, habits, on='都道府県名')
+
+    option_disease2 = st.selectbox(
+        'どの疾患の一人当たり医療費について調べたいですか？',
+        (disease_list2))
     
     option_habits = st.selectbox(
-        '一人当たり医療費との相関を調べたい生活習慣を選択して下さい',
-        ['成人１人当たりの酒類消費量(ℓ/年,2021)','成人喫煙率(%,2019)']
+        '上記疾患の一人当たり医療費との相関を調べたい生活習慣を選択して下さい',
+        ['成人１人当たりの酒類消費量(ℓ/年,2021)','(内、清酒のみ)','(内、焼酎のみ)','(内、ビール/発泡酒のみ)','(その他)','成人喫煙率(%,2019)','ラーメン(外食)消費量(杯/年、2020)','1日当たり平均歩数(2016)']
         )
+    
+    if option_habits == 'ラーメン(外食)消費量(杯/年、2020)':
+        st.image(ramenImg[random.randint(0,2)])
+    elif option_habits == '1日当たり平均歩数(2016)':
+        st.image(runImg[random.randint(0,2)])
+    elif option_habits == '成人喫煙率(%,2019)':
+        st.image(smokeImg[random.randint(0,2)])
+    else:
+        st.image(image2[random.randint(0,7)])
 
-    st.image(image2[random.randint(0,6)])
     st.write('  \n')
     st.write('  \n') 
     
     s1 = correl[option_habits]
-    s2 = correl[option_disease]
+    s2 = correl[option_disease2]
     res=s1.corr(s2)
 
     st.write('相関係数(-1~1)は',round(res,2),'です。1に近いほど正の相関、-1に近いほど負の相関を意味しています。0に近い場合はほぼ相関がないことを示しています。')
@@ -325,13 +350,13 @@ with tab2:
     max_x2 = int(correl[option_habits].max())*1.1
 
     mix_y = 0
-    mix_y = int(correl[option_disease].min())*0.9
+    mix_y = int(correl[option_disease2].min())*0.9
 
     max_y = 0
-    max_y = int(correl[option_disease].max())*1.1
+    max_y = int(correl[option_disease2].max())*1.1
 
     fig = px.scatter(correl, x = option_habits,
-                      y = option_disease, 
+                      y = option_disease2, 
                       range_x = [mix_x, max_x2],
                       range_y = [mix_y, max_y],
                       size_max = 100,
@@ -342,10 +367,12 @@ with tab2:
 
     st.write('<a href="https://www.nta.go.jp/taxes/sake/shiori-gaikyo/shiori/2023/index.htm">出典：国税局 酒のしおり(令和5年6月)(販売(消費)数量)(2021年度)</a>', unsafe_allow_html=True)
     st.write('<a href="https://ganjoho.jp/reg_stat/statistics/data/dl/index.html#smoking">出典：国民生活基礎調査による都道府県別喫煙率データ(2019年度)</a>', unsafe_allow_html=True)
+    st.write('<a href="https://www.e-stat.go.jp/dbview?sid=0003234800">出典：e-Stat 統計で見る日本(2016年度)</a>', unsafe_allow_html=True)
+    st.write('<a href="https://kisetsumimiyori.com/ramensyouhi/">出典：【2020年】ラーメン（外食）の消費量ランキング</a>', unsafe_allow_html=True)
     st.write('  \n')
 
 with tab３:
-    st.write('本ダッシュボード(DB)は厚生労働省やRESAS等の医療系オープンデータを加工して作成しております。日本の医療業界に関わるビジネスパーソンの方々や地方自治体の方々の業務に少しでもお役にたてることを願っております。改善点やご要望等のフィードバックを頂けますと大変励みになります。ご連絡/お問合せは以下メールまでお願い致します。')
+    st.write('本ダッシュボード(DB)は厚生労働省やRESAS等の医療系オープンデータを加工して作成しております。生活習慣との相関についてはデータポイントも十分ではなく、あくまで参考値である旨ご容赦ください。日本の医療業界に関わるビジネスパーソンの方々や地方自治体の方々の業務に少しでもお役にたてることを願っております。改善点やご要望等のフィードバックを頂けますと大変励みになります。ご連絡/お問合せは以下メールまでお願い致します。')
     st.write('<a href="mailto:tadahisa.terao777@gmail.com">tadahisa.terao777@gmail.com</a>', unsafe_allow_html=True)
     profileImg = Image.open('./pics/profile.JPG')
     st.image(profileImg)
