@@ -1,12 +1,12 @@
 import numpy as np 
 import pandas as pd 
-import streamlit as st 
 import pydeck as pdk
 import plotly.express as px
 from PIL import Image
 import random
 
 import os
+import streamlit as st 
 from streamlit_chat import message
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
