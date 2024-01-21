@@ -6,10 +6,21 @@ import plotly.express as px
 from PIL import Image
 import random
 
+import os
+from streamlit_chat import message
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import ConversationalRetrievalChain
+from langchain.document_loaders import PyPDFLoader
+from langchain.vectorstores import FAISS
+import tempfile
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+
+st.set_page_config(page_title='日本の医療オープンデータ解析DB',layout='centered')
 st.title('日本の医療オープンデータ解析DB')
-tab_titles = ['サマリー','生活習慣との相関','お問合せ先']
-tab1, tab2, tab3 = st.tabs(tab_titles)
+tab_titles = ['サマリー','生活習慣との相関','AI先生','お問合せ先']
+tab1, tab2, tab3, tab4 = st.tabs(tab_titles)
 
 with tab1:
     st.header('サマリー')
@@ -372,6 +383,94 @@ with tab2:
     st.write('  \n')
 
 with tab３:
+    st.header('AI先生に聞いてみよう')
+    st.write('ChatGPTのAPIを活用したチャットボットです。PDFをアップロードしたらその中身について教えてあげましょう。ただしOpenAIのAPIKeyが必要です。')
+
+    teachImg0 = Image.open('./pics/teacher0.PNG')
+    teachImg1 = Image.open('./pics/teacher1.PNG')
+    teachImg2 = Image.open('./pics/teacher2.PNG')
+    teachImg3 = Image.open('./pics/teacher3.PNG')
+
+    teachImg = [teachImg0,teachImg1,teachImg2,teachImg3]
+
+    st.image(teachImg[random.randint(0,3)])
+
+    user_api_key = st.text_input(
+    label="Your OpenAI API key",
+    placeholder="あなたのOpenAI API keyをここにペーストして下さい。",
+    type="password")
+
+    uploaded_file = st.file_uploader("調べたいPDFをアップロードして下さい。", type="pdf")
+
+    os.environ['OPENAI_API_KEY'] = user_api_key
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size = 2000,
+        chunk_overlap  = 100,
+        length_function = len,
+    
+    )
+
+    if uploaded_file :
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            tmp_file.write(uploaded_file.getvalue())
+            tmp_file_path = tmp_file.name
+
+        loader = PyPDFLoader(file_path=tmp_file_path)  
+        data = loader.load_and_split(text_splitter)
+
+        embeddings = OpenAIEmbeddings()
+        vectors = FAISS.from_documents(data, embeddings)
+
+        chain = ConversationalRetrievalChain.from_llm(llm = ChatOpenAI(temperature=0.0,model_name='gpt-3.5-turbo-16k'),
+                                                                      retriever=vectors.as_retriever())
+        # This function takes a query as input and returns a response from the ChatOpenAI model.
+        def conversational_chat(query):
+
+            # The ChatOpenAI model is a language model that can be used to generate text, translate languages, write different kinds of creative content, and answer your questions in an informative way.
+            result = chain({"question": query, "chat_history": st.session_state['history']})
+            # The chat history is a list of tuples, where each tuple contains a query and the response that was generated from that query.
+            st.session_state['history'].append((query, result["answer"]))
+            
+            # The user's input is a string that the user enters into the chat interface.
+            return result["answer"]
+        
+        if 'history' not in st.session_state:
+            st.session_state['history'] = []
+
+        if 'generated' not in st.session_state:
+            st.session_state['generated'] = ["こんにちは! この資料について気軽に何でも聞いて下さいね♪" + uploaded_file.name]
+
+        if 'past' not in st.session_state:
+            st.session_state['past'] = ["こんにちは!"]
+            
+        # This container will be used to display the chat history.
+        response_container = st.container()
+        # This container will be used to display the user's input and the response from the ChatOpenAI model.
+        container = st.container()
+
+        with container:
+            with st.form(key='my_form', clear_on_submit=True):
+                
+                user_input = st.text_input("質問を入力して下さい:", placeholder="Please enter your message regarding the PDF data.", key='input')
+                submit_button = st.form_submit_button(label='Send')
+                
+            if submit_button and user_input:
+                output = conversational_chat(user_input)
+                
+                st.session_state['past'].append(user_input)
+                st.session_state['generated'].append(output)
+
+        if st.session_state['generated']:
+            with response_container:
+                for i in range(len(st.session_state['generated'])):
+                    message(st.session_state["past"][i], is_user=True, key=str(i) + '_user', avatar_style="thumbs")
+                    message(st.session_state["generated"][i], key=str(i), avatar_style="big-smile")
+
+
+
+
+with tab4:
     st.write('本ダッシュボード(DB)は厚生労働省やRESAS等の医療系オープンデータを加工して作成しております。生活習慣との相関についてはデータポイントも十分ではなく、あくまで参考値である旨ご容赦ください。日本の医療業界に関わるビジネスパーソンの方々や地方自治体の方々の業務に少しでもお役にたてることを願っております。改善点やご要望等のフィードバックを頂けますと大変励みになります。ご連絡/お問合せは以下メールまでお願い致します。')
     st.write('<a href="mailto:tadahisa.terao777@gmail.com">tadahisa.terao777@gmail.com</a>', unsafe_allow_html=True)
     profileImg = Image.open('./pics/profile.JPG')
